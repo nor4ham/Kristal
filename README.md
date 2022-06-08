@@ -11,11 +11,13 @@ Type of users: customers , sellers,and admins
 ### customers
 - View thier profiles.
 - View horse's profile.
-- Withdraw from courses.
-- Edit information.
+- Edit thier profiles.
+- Participate in the auction
+- View an auction details
+
 - Take assignments.
 - Send Inquiries to teachers and faculties.
-- View joined courses.
+
 - View course information.
 - View student progress on a specific course.
 - Search for courses.### sellers
