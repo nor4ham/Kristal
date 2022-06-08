@@ -9,18 +9,20 @@ Highlight on ِarabian horses (ٍShabi horses)-Horses  do not have a registratio
 ## User Stories
 Type of users: customers , sellers,and admins
 ### customers
-- View thier profiles.
-- View horse's profile.
+- View  profiles.
 - Edit thier profiles.
 - Participate in the auction
 - View an auction details
-
-- Take assignments.
-- Send Inquiries to teachers and faculties.
-
-- View course information.
-- View student progress on a specific course.
-- Search for courses.### sellers
-...........
+### sellers
+- View profiles.
+- Edit thier profiles.
+- Edit horse's profile.
+- add horse
+- start an auction
+- determine an auction details
 ### admins
-...........
+- View profiles.
+- delete user , horse ,or auction.
+
+
+
