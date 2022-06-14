@@ -4,80 +4,65 @@ from rest_framework.decorators import api_view
 from kristal.models import User
 from rest_framework import status
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import AccessToken,Token
+from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth.models import Group
 
-from .models import ProfileCustomer 
+from .models import Profilecustomer 
 from .serializers import ProfileCustomerSerializer,CustomerSinupSerializer
 
 
 from rest_framework.views import APIView
 from django.http import Http404
 
-from rest_framework.decorators import authentication_classes
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
- 
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 # Customer_List Class based views
-#4.1 List and Create == GET and POST
+#List and Create == GET and POST
 class Customer_List(APIView):
     """This endpoint  List and Create == GET  of the customers from the database"""  
        
     def get(self, request):
-        profiles = ProfileCustomer.objects.all()
+        profiles = Profilecustomer.objects.all()
         serializer = ProfileCustomerSerializer(profiles, many = True)
         return Response(serializer.data)
-        '''
-    def post(self, request):
-        serializer = ProfileCustomerSerializer(data= request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                serializer.data,
-                status = status.HTTP_201_CREATED
-            )
-        return Response(
-            serializer.data,
-            status= status.HTTP_40
-        )
-       '''
-
 #4.2 GET PUT DELETE cloass based views -- pk 
 class  Customer_pk(APIView):
 
     def get_object(self, pk):
         try:
-            return ProfileCustomer.objects.get(pk=pk)
-        except ProfileCustomer.DoesNotExists:
+            return Profilecustomer.objects.get(pk=pk)
+        except Profilecustomer.DoesNotExists:
             raise Http404
-    @authentication_classes([JWTAuthentication])     
     def get(self, request, pk):
       user:User = request.user
       if user.is_authenticated:            
         profile = self.get_object(pk)
         serializer = ProfileCustomerSerializer(profile)
         return Response(serializer.data)
-      return Response({"msg" : "login plz"})
-    @authentication_classes([JWTAuthentication])     
+      return Response({"msg" : "login plz or u dont have permissions"})
+
+    @permission_classes([IsAuthenticated])
     def put(self, request, pk):
       user:User = request.user
-      if user.is_authenticated:            
+      if user.is_authenticated  and  user.has_perm("customers.change_profilecustomer"):         
         profile = self.get_object(pk)
         serializer = ProfileCustomerSerializer(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-      return Response({"msg" : "login plz"})
+      return Response({"msg" : "login plz or u dont have permissions"})
 
-    @authentication_classes([JWTAuthentication])     
+    @permission_classes([IsAuthenticated])    
     def delete(self, request, pk):
       user:User = request.user
-      if user.is_authenticated:            
+      if user.is_authenticated and  user.has_perm("customers.delete_profilecustomer"):            
         profile = self.get_object(pk)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-      return Response({"msg" : "login plz"})
+      return Response({"msg" : "login plz or u dont have permissions"})
 
 
 @api_view(['POST'])
@@ -88,7 +73,7 @@ def CustomerSinup(request : Request):
         new_user = User.objects.create_user(**user_serializer.data)
         new_user.is_customer = True
         new_user.save()
-        ProfileCustomer.objects.create(user=new_user)
+        Profilecustomer.objects.create(user=new_user)
         my_group = Group.objects.get(name='customers')
         my_group.user_set.add(new_user)
         return Response({"msg" : "created user successfuly"})

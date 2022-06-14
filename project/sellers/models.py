@@ -1,7 +1,7 @@
 from django.db import models
 from kristal.models import User
 
-class ProfileSeller(models.Model):
+class Profileseller(models.Model):
     user = models.OneToOneField(User , on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15,null=True , blank=True)
     addres = models.CharField(max_length=50 , blank=True, null=True)

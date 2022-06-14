@@ -1,4 +1,4 @@
-from .models import ProfileSeller
+from .models import Profileseller
 from .serializers import ProfileSellerSerializer,SellerSinupSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -12,8 +12,9 @@ from django.contrib.auth.models import Group
 from rest_framework.views import APIView
 from django.http import Http404
 
-from rest_framework.decorators import authentication_classes
-from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 # Seller_List Class based views
 #4.1 List and Create == GET and POST
@@ -21,56 +22,43 @@ class Seller_List(APIView):
     """This endpoint  List  of the sellers from the database"""  
        
     def get(self, request):
-        profiles = ProfileSeller.objects.all()
+        profiles = Profileseller.objects.all()
         serializer = ProfileSellerSerializer(profiles, many = True)
         return Response(serializer.data)
-        '''
-    def post(self, request):
-        serializer = ProfileCustomerSerializer(data= request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                serializer.data,
-                status = status.HTTP_201_CREATED
-            )
-        return Response(
-            serializer.data,
-            status= status.HTTP_40
-        )
-       '''
+      
 
 #4.2 GET PUT DELETE cloass based views -- pk 
 class  Seller_pk(APIView):
 
     def get_object(self, pk):
         try:
-            return ProfileSeller.objects.get(pk=pk)
-        except ProfileSeller.DoesNotExists:
+            return Profileseller.objects.get(pk=pk)
+        except Profileseller.DoesNotExists:
             raise Http404
     def get(self, request, pk):
         profile = self.get_object(pk)
         serializer = ProfileSellerSerializer(profile)
         return Response(serializer.data)
-    @authentication_classes([JWTAuthentication])     
+    @permission_classes([IsAuthenticated])
     def put(self, request, pk):
       user:User = request.user
-      if user.is_authenticated:    
+      if user.is_authenticated and  user.has_perm("sellers.change_profileseller"):    
         profile = self.get_object(pk)
         serializer = ProfileSellerSerializer(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-      return Response({"msg" : "login plz"})
+      return Response({"msg" : "login plz or u dont have permissions"})
 
-    @authentication_classes([JWTAuthentication])   
+    @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
      user:User = request.user
-     if user.is_authenticated:
+     if user.is_authenticated and  user.has_perm("sellers.delete_profileseller"):  
         profile = self.get_object(pk)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-     return Response({"msg" : "login plz"})
+     return Response({"msg" : "login plz or u dont have permissions"})
 
 @api_view(['POST'])
 def SellerSinup(request : Request):
@@ -80,7 +68,7 @@ def SellerSinup(request : Request):
         new_user = User.objects.create_user(**user_serializer.data)
         new_user.is_seller = True
         new_user.save()
-        ProfileSeller.objects.create(user=new_user)
+        Profileseller.objects.create(user=new_user)
         my_group = Group.objects.get(name='sellers')
         my_group.user_set.add(new_user)
         return Response({"msg" : "created user successfuly"})

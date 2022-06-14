@@ -1,3 +1,3 @@
 from django.contrib import admin
-from .models import ProfileSeller
-admin.site.register(ProfileSeller)
+from .models import Profileseller
+admin.site.register(Profileseller)

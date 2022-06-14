@@ -1,12 +1,12 @@
 #### get data from model ---> json
-from .models import ProfileSeller
+from .models import Profileseller
 from kristal.models import User
 
 from rest_framework import serializers
 
 class ProfileSellerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProfileSeller
+        model = Profileseller
         fields = '__all__'
 
 

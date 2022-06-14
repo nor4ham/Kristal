@@ -1,7 +1,7 @@
 from django.db import models
 from kristal.models import User
-from sellers.models import ProfileSeller
-class ProfileHorse(models.Model):
+from sellers.models import Profileseller
+class Profilehorse(models.Model):
 #    seller =User.objects.get(is_seller=True)
     name=models.CharField(max_length= 200)
     image=models.URLField()
@@ -12,7 +12,7 @@ class ProfileHorse(models.Model):
      ('Hamdani','Hamdani'),('Hadban','Hadban'),
     ]
     pedigree =models.CharField(max_length= 200,null=True,blank=True,choices=categoryList)
-    seller =models.ForeignKey(ProfileSeller,on_delete=models.CASCADE,related_name='horses')
+    seller =models.ForeignKey(Profileseller,on_delete=models.CASCADE,related_name='horses')
     create_daate=models.DateTimeField(auto_now=True)
     def __str__(self):
         return str(self.name)
@@ -20,9 +20,8 @@ class ProfileHorse(models.Model):
 class Comment(models.Model):
     body=models.TextField(verbose_name='')
     comment_daate=models.DateTimeField(auto_now=True)
-    horse =models.ForeignKey(ProfileHorse,on_delete=models.CASCADE,related_name='comments_horse')
+    horse =models.ForeignKey(Profilehorse,on_delete=models.CASCADE,related_name='comments_horse')
     def __str__(self):
         return self.body
     class Meta:   
-        verbose_name='Comment_table'    
         ordering=['-comment_daate']
