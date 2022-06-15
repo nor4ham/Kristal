@@ -1,4 +1,4 @@
-from .models import Profilehorse,Comment 
+from .models import Horse as Profilehorse,Comment 
 from .serializers import ProfileHorseSerializer,CommentSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -21,7 +21,7 @@ class Horse_List(APIView):
     @permission_classes([IsAuthenticated])
     def post(self, request):
      user:User = request.user
-     if user.is_authenticated and user.has_perm("horses.add_profilehorse"):
+     if user.is_authenticated and user.has_perm("horses.add_horse"):
         serializer = ProfileHorseSerializer(data= request.data)
         if serializer.is_valid():
             serializer.save()
@@ -51,7 +51,7 @@ class  Horse_pk(APIView):
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
      user:User = request.user
-     if user.is_authenticated and user.has_perm("horses.change_profilehorse"):      
+     if user.is_authenticated and user.has_perm("horses.change_horse"):      
         profile = self.get_object(pk)
         serializer = ProfileHorseSerializer(profile, data=request.data)
         if serializer.is_valid():
@@ -63,7 +63,7 @@ class  Horse_pk(APIView):
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
      user:User = request.user
-     if user.is_authenticated and  user.has_perm("horses.delete_profilehorse"):
+     if user.is_authenticated and  user.has_perm("horses.delete_horse"):
         profile = self.get_object(pk)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

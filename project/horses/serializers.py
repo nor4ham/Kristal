@@ -1,11 +1,11 @@
 #### get data from model ---> json
-from .models import Profileseller,Comment
+from .models import  Horse as Profilehorse,Comment
 
 from rest_framework import serializers
 
 class ProfileHorseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profileseller
+        model = Profilehorse
         fields = '__all__'
 
 

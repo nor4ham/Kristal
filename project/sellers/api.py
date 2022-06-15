@@ -1,4 +1,4 @@
-from .models import Profileseller
+from .models import Seller as Profileseller
 from .serializers import ProfileSellerSerializer,SellerSinupSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -42,7 +42,7 @@ class  Seller_pk(APIView):
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
       user:User = request.user
-      if user.is_authenticated and  user.has_perm("sellers.change_profileseller"):    
+      if user.is_authenticated and  user.has_perm("sellers.change_seller"):    
         profile = self.get_object(pk)
         serializer = ProfileSellerSerializer(profile, data=request.data)
         if serializer.is_valid():
@@ -54,7 +54,7 @@ class  Seller_pk(APIView):
     @permission_classes([IsAuthenticated])
     def delete(self, request, pk):
      user:User = request.user
-     if user.is_authenticated and  user.has_perm("sellers.delete_profileseller"):  
+     if user.is_authenticated and  user.has_perm("sellers.delete_seller"):  
         profile = self.get_object(pk)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,5 +1,5 @@
 #### get data from model ---> json
-from .models import Profileseller
+from .models import Seller as Profileseller
 from kristal.models import User
 
 from rest_framework import serializers

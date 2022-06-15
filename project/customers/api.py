@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import AccessToken
 from django.contrib.auth.models import Group
 
-from .models import Profilecustomer 
+from .models import Customer as Profilecustomer 
 from .serializers import ProfileCustomerSerializer,CustomerSinupSerializer
 
 
@@ -46,7 +46,7 @@ class  Customer_pk(APIView):
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
       user:User = request.user
-      if user.is_authenticated  and  user.has_perm("customers.change_profilecustomer"):         
+      if user.is_authenticated  and  user.has_perm("customers.change_customer"):         
         profile = self.get_object(pk)
         serializer = ProfileCustomerSerializer(profile, data=request.data)
         if serializer.is_valid():
@@ -58,7 +58,7 @@ class  Customer_pk(APIView):
     @permission_classes([IsAuthenticated])    
     def delete(self, request, pk):
       user:User = request.user
-      if user.is_authenticated and  user.has_perm("customers.delete_profilecustomer"):            
+      if user.is_authenticated and  user.has_perm("customers.delete_customer"):            
         profile = self.get_object(pk)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
