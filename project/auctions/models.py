@@ -7,3 +7,4 @@ class auction(models.Model):
    upate_price=models.IntegerField()
    customer=models.ManyToManyField(Customer)
    date=models.DateField()
+   accepted = models.BooleanField(default=False)

@@ -90,8 +90,8 @@ class Comment_List(APIView):
     """This endpoint  List and Create  of the Comment from the database"""  
        
     def get(self, request):
-        profiles = Comment.objects.all()
-        serializer = CommentSerializer(profiles, many = True)
+        comment = Comment.objects.all()
+        serializer = CommentSerializer(comment, many = True)
         return Response(serializer.data)
     @permission_classes([IsAuthenticated])
     def post(self, request):
@@ -119,16 +119,16 @@ class  Comment_pk(APIView):
         except Comment.DoesNotExists:
             raise Http404
     def get(self, request, pk):
-        profile = self.get_object(pk)
-        serializer = CommentSerializer(profile)
+        comment = self.get_object(pk)
+        serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
     @permission_classes([IsAuthenticated])
     def put(self, request, pk):
      user:User = request.user
      if user.is_authenticatedand and user.has_perm("horses.change_comment"):   
-        profile = self.get_object(pk)
-        serializer = CommentSerializer(profile, data=request.data)
+        comment = self.get_object(pk)
+        serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -139,7 +139,7 @@ class  Comment_pk(APIView):
     def delete(self, request, pk):
      user:User = request.user
      if user.is_authenticated and  user.has_perm("horses.delete_comment"):
-        profile = self.get_object(pk)
-        profile.delete()
+        comment = self.get_object(pk)
+        comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
      return Response({"msg" : "login plz or u dont have permissions"})    
