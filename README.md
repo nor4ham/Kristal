@@ -5,7 +5,7 @@
 ## Idea:
 What Is an Kristal (An auction ِarabian horse)? 
 it is a website that facilitates the buying and selling of arabian horses.
-![horse1](https://user-images.githubusercontent.com/71218097/174011909-52843865-57b8-4bea-8d08-3ae93cd9a021.jpeg)
+![horse2](https://user-images.githubusercontent.com/71218097/174012581-a18785c2-03ef-42f0-b7c1-267c70235ce3.jpeg)
 
 ## Inspiration:
 Highlight on ِarabian horses (ٍShabi horses)-Horses  do not have a registration certificate
