@@ -1,4 +1,5 @@
 
+<img width="190" alt="logo" src="https://user-images.githubusercontent.com/71218097/174012243-260a07ab-2e1b-49f6-ace8-fc311e955072.png">
 
 # Project Name: Kristal
 ## Idea:
